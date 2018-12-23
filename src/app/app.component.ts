@@ -16,12 +16,21 @@ export class AppComponent implements OnInit {
   private firstSelect: Monkey;
   private secondSelect: Monkey;
 
+  public menu = true;
+  public gameWon = false;
+  public gameOverString = "Ett klick ifrån nytt rekord!";
+
+  public preHighscore: number;
+
   ngOnInit(): void {
-    const m1 = this.addMonkeys();
-    const m2 = this.addMonkeys();
+    const m1 = this.addDogs();
+    const m2 = this.addDogs();
     this.monkeys = this.monkeys.concat(m1, m2);
     this.monkeys = this.shuffle(this.monkeys);
-    console.log(this.monkeys);
+
+    const hs = localStorage.getItem("highscore");
+    if (hs === null) this.preHighscore = null;
+    else this.preHighscore = parseInt(hs, 10);
   }
 
   cardClick(card: Monkey): void {
@@ -40,6 +49,9 @@ export class AppComponent implements OnInit {
         this.firstSelect.matched = true;
         this.secondSelect.matched = true;
       }
+      if (this.hasWon()) {
+        this.win();
+      }
     }
 
     if (this.twoOpen > 1) {
@@ -51,6 +63,42 @@ export class AppComponent implements OnInit {
   private checkMatch(): boolean {
     if (this.firstSelect.monkeyId === this.secondSelect.monkeyId) return true;
     return false;
+  }
+
+  private hasWon(): boolean {
+    let win = true;
+    this.monkeys.forEach(m => {
+      if (!m.matched) win = false;
+    });
+    return win;
+  }
+
+  private win(): void {
+    this.gameWon = true;
+    this.menu = true;
+    if (this.preHighscore !== null) {
+      if (this.clickCount < this.preHighscore) {
+        localStorage.setItem("highscore", this.clickCount.toString());
+        this.gameOverString = "Nytt highscore!";
+        this.preHighscore = this.clickCount;
+        return;
+      }
+      if (this.clickCount === this.preHighscore) {
+        this.gameOverString = "Ett klick ifrån nytt rekord!";
+        return;
+      }
+      if (this.clickCount > this.preHighscore) {
+        this.gameOverString = "Övning ger färdighet, eller?";
+        return;
+      }
+    }
+    localStorage.setItem("highscore", this.clickCount.toString());
+    this.preHighscore = this.clickCount;
+    this.gameOverString = "Bra grejer, nytt highscore sparat";
+  }
+
+  public startGame() {
+    this.menu = false;
   }
 
   private closeAllCards() {
@@ -70,10 +118,13 @@ export class AppComponent implements OnInit {
     this.secondSelect = undefined;
     this.monkeys = [];
     this.ngOnInit();
+    this.menu = false;
   }
 
   public shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
       // Pick a remaining element...
@@ -102,27 +153,70 @@ export class AppComponent implements OnInit {
       isFlipped: false,
       matched: false
     });
+    // monkeys.push({
+    //   monkeyId: 3,
+    //   monkeyImageSource: "assets/monkey3.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+    // monkeys.push({
+    //   monkeyId: 4,
+    //   monkeyImageSource: "assets/monkey4.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+    // monkeys.push({
+    //   monkeyId: 5,
+    //   monkeyImageSource: "assets/monkey5.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+    // monkeys.push({
+    //   monkeyId: 6,
+    //   monkeyImageSource: "assets/monkey6.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+
+    return monkeys;
+  }
+
+  private addDogs(): Monkey[] {
+    const monkeys: Monkey[] = [];
+
+    monkeys.push({
+      monkeyId: 1,
+      monkeyImageSource: "assets/hund1.jpg",
+      isFlipped: false,
+      matched: false
+    });
+    monkeys.push({
+      monkeyId: 2,
+      monkeyImageSource: "assets/hund2.jpg",
+      isFlipped: false,
+      matched: false
+    });
     monkeys.push({
       monkeyId: 3,
-      monkeyImageSource: "assets/monkey3.jpeg",
+      monkeyImageSource: "assets/hund3.jpg",
       isFlipped: false,
       matched: false
     });
     monkeys.push({
       monkeyId: 4,
-      monkeyImageSource: "assets/monkey4.jpeg",
+      monkeyImageSource: "assets/hund4.jpg",
       isFlipped: false,
       matched: false
     });
     monkeys.push({
       monkeyId: 5,
-      monkeyImageSource: "assets/monkey5.jpeg",
+      monkeyImageSource: "assets/hund5.jpg",
       isFlipped: false,
       matched: false
     });
     monkeys.push({
       monkeyId: 6,
-      monkeyImageSource: "assets/monkey6.jpeg",
+      monkeyImageSource: "assets/hund6.jpg",
       isFlipped: false,
       matched: false
     });

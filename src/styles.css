@@ -1,9 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Exo');
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 body {
-  font-family: sans-serif;
+  font-family: 'Exo';
   margin: 0;
   background-image: url('assets/back.jpg');
   background-size: cover;
+  background-position: bottom;
+  height: 100vh;
 }
 
 * {

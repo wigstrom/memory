@@ -1,14 +1,35 @@
 .playArea {
-  height: 100vh;
+  height: 90vh;
   max-width: 920px;
   width: 100%;
   margin: auto
 }
 
+.button{
+  margin: 10px;
+}
+
+.left{
+  float: left;
+}
+
+.right{
+  float: right;
+}
+
+.clear{
+  clear: both;
+}
+
+.gameHeader{
+  text-align: center;
+  padding: 10px 0 35px 0;
+}
+
 .scene {
   display: inline-block;
-  width: 30%;
-  height: 17%;
+  width: 22%;
+  height: 22%;
   margin: 10px;
   perspective: 600px;
 }
@@ -34,13 +55,13 @@
   height: 100%;
   backface-visibility: hidden;
   border-radius: 10px;
-  -webkit-box-shadow: 0px 0px 44px -12px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 44px -12px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 44px -12px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.75);
 }
 
 .card__face--front {
-  background-image: url("../assets/cardFront.jpeg");
+  background-image: url("../assets/cardFront.jpg");
   background-size: cover;
 }
 
@@ -53,11 +74,108 @@
   height: auto;
 }
 
+.hide{
+  height: 0vh;
+  animation: .6s "backgroundColorAnimationRemove";
+}
+
+.hide .header{
+  margin-top: 30vh;
+  transform: translateY(-6000px);
+  animation: .6s "upText";
+}
+
+.reveal{
+  height: 100vh;
+  animation: .6s "backgroundColorAnimation";
+}
+.reveal .header{
+  margin-top: 30vh;
+  animation: .6s "dropText";
+}
+
+@keyframes backgroundColorAnimationRemove{
+  0%{
+    background-color: #000000f0;
+    height: 100vh;
+  }
+  100%{
+    background-color: #00000000;
+    height: 0vh;
+  }
+}
+
+@keyframes backgroundColorAnimation{
+  0%{background-color: #00000000;}
+  100%{background-color: #000000f0}
+}
+.resultArea{
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #000000f0;
+  text-align: center;
+  color: #fff;
+
+}
+
+@keyframes dropText{
+  0%{
+    opacity: 0;
+    display: block;
+    transform: translateY(-600px);
+  }
+  60%{
+    transform: translateY(20px);
+  }
+  80%{
+    transform: translateY(-10px);
+  }
+  100%{
+    opacity: 1;
+    display: none;
+    transform: translateY(0);
+  }
+}
+
+@keyframes upText{
+  0%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  20%{
+    transform: translateY(-10px);
+  }
+  40%{
+    transform: translateY(20px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(-600px);
+  }
+}
+
+.resultArea .header h1{
+  font-size: 5rem;
+}
+
+.resultArea small{
+  display: block;
+  margin: 1rem;
+}
+
+.resultArea .header button{
+  margin-top: 1rem;
+}
+
 @media screen and (max-width: 600px) {
   .scene {
-    width: 49%;
-    height: 12%;
-    margin: .5%;
+    width: 32%;
+    height: 18%;
+    margin: .66%;
   }
 
   .card__face {
@@ -66,8 +184,5 @@
     height: 100%;
     backface-visibility: hidden;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 44px -12px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 44px -12px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 44px -12px rgba(0, 0, 0, 0.75);
   }
 }

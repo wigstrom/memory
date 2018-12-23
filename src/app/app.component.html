@@ -1,10 +1,9 @@
 <div class="playArea">
-  <div>
-    <h1>Antal klick: {{ clickCount }}</h1>
-    <button (click)="shuffle(monkeys)">Shuffle</button>
-    <button (click)="restart()">Restart</button>
+  <div class="gameHeader">
+    <h1>Highscore: <span *ngIf="preHighscore !== null">{{ preHighscore }} klick</span><span *ngIf="preHighscore === null"> - </span></h1>
+    <button mat-raised-button (click)="shuffle(monkeys)" class="button">Shuffle</button>
+    <button mat-raised-button (click)="restart()" class="button">Restart</button>
   </div>
-
   <div class="scene scene--card" *ngFor="let monkey of monkeys">
     <div
       class="card"
@@ -18,8 +17,21 @@
           'background-image': 'url(' + monkey.monkeyImageSource + ')'
         }"
         style="background-size: cover; background-position: center;"
-      >
-      </div>
+      ></div>
     </div>
   </div>
+</div>
+<div class="resultArea {{menu ? 'reveal' : 'hide'}}">
+  <div *ngIf="gameWon" class="result header">
+    <h1>{{clickCount}} klick</h1>
+    <h2>{{gameOverString}}</h2>
+    <small>Ditt highscore är {{preHighscore}} klick</small>
+    <button mat-raised-button color="accent" (click)="restart()" class="button">Spela!</button>
+  </div>
+  <div *ngIf="!gameWon" class="result header">
+      <h1>Memory</h1>
+      <p *ngIf="preHighscore != null">Ditt highscore är {{preHighscore}} klick</p>
+      <p *ngIf="preHighscore === null">Sätt ditt första highscore!</p>
+      <button mat-raised-button color="accent" (click)="startGame()" class="button">Spela!</button>
+    </div>
 </div>
