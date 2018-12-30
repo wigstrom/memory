@@ -1,13 +1,13 @@
 <div class="playArea">
-  <div class="gameHeader">
+  <!-- <div class="gameHeader">
     <h1>Highscore: <span *ngIf="preHighscore !== null">{{ preHighscore }} klick</span><span *ngIf="preHighscore === null"> - </span></h1>
     <button mat-raised-button (click)="shuffle(monkeys)" class="button">Shuffle</button>
     <button mat-raised-button (click)="restart()" class="button">Restart</button>
-  </div>
-  <div class="scene scene--card" *ngFor="let monkey of monkeys">
+  </div> -->
+  <div *ngFor="let monkey of monkeys" class="scene scene--card {{monkey.matched ? 'cardWin' : ''}}">
     <div
       class="card"
-      (click)="cardClick(monkey)"
+      (click)=" !monkey.isFlipped ? cardClick(monkey) : ''"
       [ngClass]="{ 'is-flipped': monkey.isFlipped }"
     >
       <div class="card__face card__face--front"></div>

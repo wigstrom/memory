@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Monkey } from "./interfaces/monkey";
+import { AngularFireStorage } from "@angular/fire/storage";
+import { AngularFireDatabase } from "@angular/fire/database";
+import { AngularFirestore } from "@angular/fire/firestore";
 
 @Component({
   selector: "app-root",
@@ -22,13 +25,20 @@ export class AppComponent implements OnInit {
 
   public preHighscore: number;
 
+  constructor(private af: AngularFireDatabase) {
+    this.af
+      .object("connected")
+      .valueChanges()
+      .subscribe(console.log);
+  }
+
   ngOnInit(): void {
     const m1 = this.addDogs();
     const m2 = this.addDogs();
     this.monkeys = this.monkeys.concat(m1, m2);
     this.monkeys = this.shuffle(this.monkeys);
 
-    const hs = localStorage.getItem("highscore");
+    const hs = localStorage.getItem("highscoreHard");
     if (hs === null) this.preHighscore = null;
     else this.preHighscore = parseInt(hs, 10);
   }
@@ -78,7 +88,7 @@ export class AppComponent implements OnInit {
     this.menu = true;
     if (this.preHighscore !== null) {
       if (this.clickCount < this.preHighscore) {
-        localStorage.setItem("highscore", this.clickCount.toString());
+        localStorage.setItem("highscoreHard", this.clickCount.toString());
         this.gameOverString = "Nytt highscore!";
         this.preHighscore = this.clickCount;
         return;
@@ -92,7 +102,7 @@ export class AppComponent implements OnInit {
         return;
       }
     }
-    localStorage.setItem("highscore", this.clickCount.toString());
+    localStorage.setItem("highscoreHard", this.clickCount.toString());
     this.preHighscore = this.clickCount;
     this.gameOverString = "Bra grejer, nytt highscore sparat";
   }
@@ -217,6 +227,24 @@ export class AppComponent implements OnInit {
     monkeys.push({
       monkeyId: 6,
       monkeyImageSource: "assets/hund6.jpg",
+      isFlipped: false,
+      matched: false
+    });
+    monkeys.push({
+      monkeyId: 7,
+      monkeyImageSource: "assets/monkey1.jpeg",
+      isFlipped: false,
+      matched: false
+    });
+    monkeys.push({
+      monkeyId: 8,
+      monkeyImageSource: "assets/monkey2.jpeg",
+      isFlipped: false,
+      matched: false
+    });
+    monkeys.push({
+      monkeyId: 9,
+      monkeyImageSource: "assets/monkey3.jpeg",
       isFlipped: false,
       matched: false
     });
