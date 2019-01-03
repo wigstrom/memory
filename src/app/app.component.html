@@ -4,10 +4,13 @@
     <button mat-raised-button (click)="shuffle(monkeys)" class="button">Shuffle</button>
     <button mat-raised-button (click)="restart()" class="button">Restart</button>
   </div> -->
-  <div *ngFor="let monkey of monkeys" class="scene scene--card {{monkey.matched ? 'cardWin' : ''}}">
+  <div
+    *ngFor="let monkey of monkeys"
+    class="scene scene--card {{ monkey.matched ? 'cardWin' : '' }}"
+  >
     <div
       class="card"
-      (click)=" !monkey.isFlipped ? cardClick(monkey) : ''"
+      (click)="!monkey.isFlipped ? cardClick(monkey) : ''"
       [ngClass]="{ 'is-flipped': monkey.isFlipped }"
     >
       <div class="card__face card__face--front"></div>
@@ -21,17 +24,30 @@
     </div>
   </div>
 </div>
-<div class="resultArea {{menu ? 'reveal' : 'hide'}}">
+<div class="resultArea {{ menu ? 'reveal' : 'hide' }}">
   <div *ngIf="gameWon" class="result header">
-    <h1>{{clickCount}} klick</h1>
-    <h2>{{gameOverString}}</h2>
-    <small>Ditt highscore är {{preHighscore}} klick</small>
-    <button mat-raised-button color="accent" (click)="restart()" class="button">Spela!</button>
+    <h1>{{ clickCount }} klick</h1>
+    <h2>{{ secondsToMin(totalTime) }}</h2>
+    <br />
+    <h2>{{ gameOverString }}</h2>
+    <small>Ditt highscore är {{ preHighscore }} klick</small>
+    <button mat-raised-button color="accent" (click)="restart()" class="button">
+      Spela!
+    </button>
   </div>
   <div *ngIf="!gameWon" class="result header">
-      <h1>Memory</h1>
-      <p *ngIf="preHighscore != null">Ditt highscore är {{preHighscore}} klick</p>
-      <p *ngIf="preHighscore === null">Sätt ditt första highscore!</p>
-      <button mat-raised-button color="accent" (click)="startGame()" class="button">Spela!</button>
-    </div>
+    <h1>Memory</h1>
+    <p *ngIf="preHighscore != null">
+      Ditt highscore är {{ preHighscore }} klick
+    </p>
+    <p *ngIf="preHighscore === null">Sätt ditt första highscore!</p>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="startGame()"
+      class="button"
+    >
+      Spela!
+    </button>
+  </div>
 </div>
