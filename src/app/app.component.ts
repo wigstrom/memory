@@ -3,6 +3,10 @@ import { Monkey } from "./interfaces/monkey";
 import { AngularFireStorage } from "@angular/fire/storage";
 import { AngularFireDatabase } from "@angular/fire/database";
 import { AngularFirestore } from "@angular/fire/firestore";
+import { take } from "rxjs/operators";
+import { FirebaseService } from "./services/firebase.service";
+import { Connection } from "./interfaces/connection";
+import { TopList } from "./interfaces/top-list";
 
 @Component({
   selector: "app-root",
@@ -25,11 +29,17 @@ export class AppComponent implements OnInit {
 
   public preHighscore: number;
 
-  constructor(private af: AngularFireDatabase) {
-    this.af
-      .object("connected")
-      .valueChanges()
-      .subscribe(console.log);
+  public company$: any;
+  public highscores$: any;
+
+  constructor(public afService: FirebaseService) {
+    this.company$ = this.afService.company$.valueChanges();
+    this.highscores$ = this.afService.topList$.valueChanges();
+    this.highscores$ = this.afService.topList$.valueChanges().subscribe(
+      next => console.log(next),
+      err => console.error(err),
+      () => console.log("complete"),
+    );
   }
 
   ngOnInit(): void {
@@ -41,6 +51,23 @@ export class AppComponent implements OnInit {
     const hs = localStorage.getItem("highscoreHard");
     if (hs === null) this.preHighscore = null;
     else this.preHighscore = parseInt(hs, 10);
+  }
+
+  saveName(comp) {
+    this.afService.saveName(comp);
+  }
+
+  pushHighscore() {
+    const score: TopList = {
+      date: new Date(),
+      name: "Simon",
+      score: this.clickCount
+    };
+    this.afService.pushHighScore(score);
+  }
+
+  editName(comp) {
+    this.afService.saveName(comp);
   }
 
   cardClick(card: Monkey): void {
@@ -105,6 +132,7 @@ export class AppComponent implements OnInit {
     localStorage.setItem("highscoreHard", this.clickCount.toString());
     this.preHighscore = this.clickCount;
     this.gameOverString = "Bra grejer, nytt highscore sparat";
+    this.pushHighscore();
   }
 
   public startGame() {
