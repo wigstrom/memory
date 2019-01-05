@@ -27,14 +27,11 @@
 <div class="resultArea {{ menu ? 'reveal' : 'hide' }}">
   <div *ngIf="gameWon" class="result header">
     <h1>{{ clickCount }} klick</h1>
+    <h2>{{ secondsToMin(totalTime) }}</h2>
+    <br />
     <h2>{{ gameOverString }}</h2>
     <small>Ditt highscore är {{ preHighscore }} klick</small>
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="restart()"
-      class="button"
-    >
+    <button mat-raised-button color="accent" (click)="restart()" class="button">
       Spela!
     </button>
   </div>
@@ -46,7 +43,7 @@
     <p *ngIf="preHighscore === null">Sätt ditt första highscore!</p>
     <button
       mat-raised-button
-      color="primary"
+      color="accent"
       (click)="startGame()"
       class="button"
     >

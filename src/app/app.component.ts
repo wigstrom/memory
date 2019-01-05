@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   public monkeys: Monkey[] = [];
   public clickCount = 0;
   public twoOpen = 0;
+  public startTime: number;
+  public totalTime: number;
 
   private comparisonActive = false;
 
@@ -111,6 +113,12 @@ export class AppComponent implements OnInit {
   }
 
   private win(): void {
+    const endTime = Math.round(new Date().getTime() / 1000);
+    this.totalTime = endTime - this.startTime;
+    console.log("Score: " + (this.totalTime + this.clickCount));
+    console.log(
+      "Poäng: " + Math.round((50 * 100) / this.totalTime + this.clickCount)
+    );
     this.gameWon = true;
     this.menu = true;
     if (this.preHighscore !== null) {
@@ -136,7 +144,24 @@ export class AppComponent implements OnInit {
   }
 
   public startGame() {
+    this.startTime = Math.round(new Date().getTime() / 1000);
+    this.totalTime = 0;
+    this.clickCount = 0;
     this.menu = false;
+  }
+
+  public secondsToMin(totalSeconds: number) {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds - hours * 3600) / 60);
+    let seconds = totalSeconds - hours * 3600 - minutes * 60;
+
+    // round seconds
+    seconds = Math.round(seconds * 100) / 100;
+
+    let result = hours < 10 ? "0" + hours : hours;
+    result += ":" + (minutes < 10 ? "0" + minutes : minutes);
+    result += ":" + (seconds < 10 ? "0" + seconds : seconds);
+    return result;
   }
 
   private closeAllCards() {
@@ -151,6 +176,8 @@ export class AppComponent implements OnInit {
 
   public restart() {
     this.closeAllCards();
+    this.startTime = Math.round(new Date().getTime() / 1000);
+    this.totalTime = 0;
     this.clickCount = 0;
     this.firstSelect = undefined;
     this.secondSelect = undefined;
@@ -252,30 +279,30 @@ export class AppComponent implements OnInit {
       isFlipped: false,
       matched: false
     });
-    monkeys.push({
-      monkeyId: 6,
-      monkeyImageSource: "assets/hund6.jpg",
-      isFlipped: false,
-      matched: false
-    });
-    monkeys.push({
-      monkeyId: 7,
-      monkeyImageSource: "assets/monkey1.jpeg",
-      isFlipped: false,
-      matched: false
-    });
-    monkeys.push({
-      monkeyId: 8,
-      monkeyImageSource: "assets/monkey2.jpeg",
-      isFlipped: false,
-      matched: false
-    });
-    monkeys.push({
-      monkeyId: 9,
-      monkeyImageSource: "assets/monkey3.jpeg",
-      isFlipped: false,
-      matched: false
-    });
+    // monkeys.push({
+    //   monkeyId: 6,
+    //   monkeyImageSource: "assets/hund6.jpg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+    // monkeys.push({
+    //   monkeyId: 7,
+    //   monkeyImageSource: "assets/monkey1.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+    // monkeys.push({
+    //   monkeyId: 8,
+    //   monkeyImageSource: "assets/monkey2.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
+    // monkeys.push({
+    //   monkeyId: 9,
+    //   monkeyImageSource: "assets/monkey3.jpeg",
+    //   isFlipped: false,
+    //   matched: false
+    // });
 
     return monkeys;
   }
